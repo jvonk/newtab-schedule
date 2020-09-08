@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>New Tab</title>
+    <style>
+        body {
+            -webkit-transition: none !important;
+            -moz-transition: none !important;
+            -o-transition: none !important;
+            transition: none !important;
+            box-sizing: border-box;
+        }
+        p {
+            margin-block-start: 0;
+            margin-block-end: 0;
+        }
+        table {
+            width: 100%;
+            table-layout: fixed
+        }
+
+        table td,
+        table th {
+            overflow: hidden;
+            white-space: nowrap
+            padding: min(5px, max(2px, calc(1vw - 5px)));
+        }
+
+        #links-div {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            margin-top: max(0px, min(50px, calc(25vh - 200px)));
+        }
+
+        #links-table,
+        #calendar {
+            width: 100%;
+            table-layout: fixed;
+            border-collapse: separate;
+            border-spacing: min(10px, max(2px, calc(1vw - 10px)));
+            width: 100%;
+            font-family: Roboto, sans-serif;
+            font-weight: 400;
+            font-size: 15px !important;
+            max-width: 900px;
+            background: hsla(0, 0%, 100%, .93333);
+            border-radius: 8px;
+            z-index: 9;
+            padding: 20px;
+            transition: opacity .4s ease;
+            box-shadow: 1px 1px 7px 1px rgba(0, 0, 0, .17);
+        }
+
+        td > input[value*="://"],
+        a:link,
+        a:visited,
+        a:link > div,
+        a:visited > div {
+            color: inherit;
+            text-decoration: none;
+            cursor: pointer;
+            background-image: linear-gradient(120deg, #fccb0b, rgba(252, 89, 11, .68));
+            background-repeat: no-repeat;
+            background-size: 100% 2px;
+            background-position: 0 calc(0.5em + 43%);
+            border-radius: 0.25em;
+            transition: background-size 0.2s ease-in-out;
+            transition: background-position 0s none;
+        }
+
+        td > input[value*="://"]:hover,
+        a:link:hover,
+        a:visited:hover,
+        a:link:hover > div,
+        a:visited:hover > div {
+            background-size: 100% calc(1em + 4px);
+            background-position: 0 43%;
+            transition: background-position 0.2s ease-in-out;
+        }
+
+        #calendar {
+            max-width: 860px;
+            overflow-wrap: break-word;
+            max-height: calc(90vh - 190px - 7vw);
+        }
+
+        #calendar-div {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            margin-top: max(10px, min(50px, calc(25vh - 200px)));
+        }
+
+        #frame {
+            pointer-events: none;
+            animation: none;
+        }
+
+        #calendar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .date {
+            font-weight: bold;
+        }
+
+        .period-range {
+            font-weight: bold;
+            font-style: italic;
+            margin-bottom: 1.5em;
+        }
+
+        .date {
+            padding-left: 1em;
+        }
+
+        .event-time,
+        .description {
+            padding-left: 2em;
+        }
+
+        #nav,
+        h1,
+        #footer {
+            display: none;
+        }
+
+        details summary::-webkit-details-marker,
+        .date-range.date-range {
+            float: left;
+        }
+
+        hr {
+            border: none;
+            height: 1px;
+            margin-bottom: 20px;
+            background-color: #333;
+        }
+
+        .no-details {
+            padding-left: 15.9px;
+        }
+
+        .summary {
+            float: right;
+            overflow: hidden;
+            white-space: nowrap;
+            max-width: calc(60% + 100px);
+        }
+
+        .event {
+            padding-bottom: 10px;
+        }
+
+        summary {
+            outline: none;
+        }
+
+        input {
+            padding: 0.5px 0 0;
+            margin: 0px;
+            background: none;
+            border: none;
+            font: inherit;
+            outline: none;
+            width: 100%;
+        }
+        th  >  input {
+            font-weight: bold;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="links-div">
+        <table id="links-table">
+            <thead>
+                <tr>
+                    <th><input type="text" value="Period"></th>
+                    <th><input type="text" value="Teacher"></th>
+                    <th><input type="text" value="Course"></th>
+                    <th><input type="text" value="#"></th>
+                    <th><input type="text" value="Zoom"></th>
+                    <th><input type="text" value="Canvas"></th>
+                    <th><input type="text" value="Slate"></th>
+                    <th><input type="text" value="Classroom"></th>
+                    <th><input type="text" value="Other"></th>
+                    <th><input type="text" value="Notes"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><input type="text" value="1"></td>
+                    <td><input type="text" value="Panos"></td>
+                    <td><input type="text" value="AP Chem"></td>
+                    <td><input type="text" value="CA2010"></td>
+                    <td id="1"><input type="text" value="zoommtg://us02web.zoom.us/join?action=join&amp;confno=82699368171&amp;pwd=U1JZczBKWEpCb05Ob2wvVkhHenRKUT09"></td>
+                    <td><input type="text" value="https://mvla.instructure.com/courses/1030"></td>
+                    <td><input type="text" value="https://docs.google.com/spreadsheets/d/1o5Ywq76SBYdcjwiKwwBoWbMdtjdnCoz-N_aBJyyOWhU/preview"></td>
+                    <td><input type="text" value=""></td>
+                    <td><input type="text" value=""></td>
+                    <td><input type="text" value="https://docs.google.com/document/d/1ltHhneWwsOzQXcf-hh4pBRGJGMzWL5o-0-L1ZbGfS4w/edit"></td>
+                </tr>
+                <tr>
+                    <td><input type="text" value="2"></td>
+                    <td><input type="text" value="Mc Henry"></td>
+                    <td><input type="text" value="AP Gov"></td>
+                    <td><input type="text" value="EA4010"></td>
+                    <td id="2"><input type="text" value="zoommtg://mvla-net.zoom.us/join?action=join&amp;confno=97398640123&amp;pwd=NjBNNXlUdnlQTEN2NlMzMTJOcGJPQT09"></td>
+                    <td><input type="text" value="https://mvla.instructure.com/courses/930"></td>
+                    <td><input type="text" value="https://docs.google.com/document/d/1O4kFjl2p2k7Q5ubKmdE2OQAb_l1XLEbpYL4HhhiGX4w/preview"></td>
+                    <td><input type="text" value="https://classroom.google.com/u/1/c/MTI2NDM0OTc0MjYz"></td>
+                    <td><input type="text" value="https://docs.google.com/document/d/18UKQCG3Of_TYgt_mTXFuk7b6GZNKMxcOrDK3_-VCKMA/preview"></td>
+                    <td><input type="text" value="https://docs.google.com/document/d/1bWMhYRZuJQOTA9_STPWcOYs4coUAPCNo4UlTA-wLKRU/edit"></td>
+                </tr>
+                <tr>
+                    <td><input type="text" value="3"></td>
+                    <td><input type="text" value=""></td>
+                    <td><input type="text" value=""></td>
+                    <td><input type="text" value=""></td>
+                    <td><input type="text" value=""></td>
+                    <td><input type="text" value=""></td>
+                    <td><input type="text" value=""></td>
+                    <td><input type="text" value=""></td>
+                    <td><input type="text" value=""></td>
+                    <td><input type="text" value=""></td>
+                </tr>
+                <tr>
+                    <td><input type="text" value="4"></td>
+                    <td><input type="text" value="Widmark"></td>
+                    <td><input type="text" value="AP Physics C"></td>
+                    <td><input type="text" value="CA3039"></td>
+                    <td id="4"><input type="text" value="zoommtg://us02web.zoom.us/join?action=join&amp;confno=89827055160&amp;pwd=d2VkV0pXZWNsdkwydTVRSSs2a3RBZz09"></td>
+                    <td><input type="text" value="https://mvla.instructure.com/courses/919"></td>
+                    <td><input type="text" value="https://mvla.instructure.com/courses/919#XPath=%2F%2Fa%5Bspan%5Bstrong%5Bspan%5Bcontains(text()%2C'Weekly%20Slate')%5D%5D%5D%5D%2F%40href"></td>
+                    <td><input type="text" value=""></td>
+                    <td><input type="text" value="https://mvla.lon-capa.net/adm/roles"></td>
+                    <td><input type="text" value="https://docs.google.com/document/d/1u3stOAgahcGjqUAAt5S_l_jqWD1FTULhq0aGNQ9BEWM/edit"></td>
+                </tr>
+                <tr>
+                    <td><input type="text" value="5"></td>
+                    <td><input type="text" value="Liu A"></td>
+                    <td><input type="text" value="AP Stat"></td>
+                    <td><input type="text" value="AA6010"></td>
+                    <td id="5"><input type="text" value="zoommtg://us02web.zoom.us/join?action=join&amp;confno=86045635398&amp;pwd=djFMMEpFQWRjTldpczJJVmJqbS9wUT09"></td>
+                    <td><input type="text" value="https://mvla.instructure.com/courses/906"></td>
+                    <td><input type="text" value="https://docs.google.com/document/d/19FpD9FKCjf3mPdfHeOLOj7H8ojk3imLtuHuM6KCe0b4/preview"></td>
+                    <td><input type="text" value=""></td>
+                    <td><input type="text" value=""></td>
+                    <td><input type="text" value="https://docs.google.com/document/d/1bS_2H6455AOqWxDQ794V3-xSAdDCKu-dCRESN6TbcME/edit"></td>
+                </tr>
+                <tr>
+                    <td><input type="text" value="6"></td>
+                    <td><input type="text" value="Lin"></td>
+                    <td><input type="text" value="AP Lit"></td>
+                    <td><input type="text" value="DA4010"></td>
+                    <td id="6"><input type="text" value="zoommtg://mvla-net.zoom.us/join?action=join&amp;confno=91682427991&amp;pwd=OThmVkhZZUREc2VKMnZraS8xMXZlZz09"></td>
+                    <td><input type="text" value="https://mvla.instructure.com/courses/990"></td>
+                    <td><input type="text" value="https://mvla.instructure.com/courses/990/modules#XPath=//a[contains(text(),%22Weekly%20Slate%22)]/@href"></td>
+                    <td><input type="text" value="https://classroom.google.com/u/1/c/MTI2MzI4MTUxNzMw"></td>
+                    <td><input type="text" value=""></td>
+                    <td><input type="text" value=""></td>
+                </tr>
+                <tr>
+                    <td><input type="text" value="7"></td>
+                    <td><input type="text" value=""></td>
+                    <td><input type="text" value=""></td>
+                    <td><input type="text" value=""></td>
+                    <td><input type="text" value=""></td>
+                    <td><input type="text" value=""></td>
+                    <td><input type="text" value=""></td>
+                    <td><input type="text" value=""></td>
+                    <td><input type="text" value=""></td>
+                    <td><input type="text" value=""></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div style="position:absolute; left:0; right:0; top:0; bottom:0; height: 100vh; width: 100vw; overflow: hidden;">
+        <iframe src="https://periods.io" id="frame" scrolling="no"
+            style="width: 100%; height: 100%; border: none; overflow: hidden;"></iframe>
+    </div>
+    <div id="calendar-div">
+        <div style="overflow-y: scroll;" id="calendar">
+	</div>
+    </div>
+    <script src="newtab.js"></script>
+</body>
+
+</html>

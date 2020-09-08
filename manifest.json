@@ -1,0 +1,33 @@
+{
+    "name": "New Tab Schedule",
+    "version": "1.0",
+    "manifest_version": 2,
+    "description": "A schedule with links on your new tab page.",
+    "icons": {
+        "16": "img/icon16.png",
+        "24": "img/icon24.png",
+        "32": "img/icon32.png",
+        "48": "img/icon48.png",
+        "128":"img/icon128.png"
+    },
+    "content_scripts": [{
+        "js": ["contentscript.js"],
+        "css": ["contentscript.css"],
+        "matches": ["https://mvla.instructure.com/courses/*", "https://periods.io/*"],
+        "run_at": "document_start",
+        "all_frames": true
+    }],
+    "chrome_url_overrides" : {
+        "newtab": "newtab.html"
+    },
+    "permissions": [
+        "storage",
+        "identity"
+    ],
+    "oauth2": {
+        "client_id": "167234074868-jf9m980qr4ae7a08mpdun0maj43ggisj.apps.googleusercontent.com",
+        "scopes": [
+            "https://www.googleapis.com/auth/calendar.readonly"
+        ]
+    }
+}
