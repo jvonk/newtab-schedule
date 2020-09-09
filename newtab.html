@@ -24,8 +24,7 @@
         table td,
         table th {
             overflow: hidden;
-            white-space: nowrap
-            padding: min(5px, max(2px, calc(1vw - 5px)));
+            white-space: nowrap;
         }
 
         #links-div {
@@ -44,7 +43,7 @@
             width: 100%;
             font-family: Roboto, sans-serif;
             font-weight: 400;
-            font-size: 15px !important;
+            font-size: 15px;
             max-width: 900px;
             background: hsla(0, 0%, 100%, .93333);
             border-radius: 8px;
@@ -52,6 +51,10 @@
             padding: 20px;
             transition: opacity .4s ease;
             box-shadow: 1px 1px 7px 1px rgba(0, 0, 0, .17);
+        }
+        #message > p {
+            text-align: center;
+            font-size: 36px !important;
         }
 
         td > input[value*="://"],
@@ -168,6 +171,7 @@
             outline: none;
             width: 100%;
         }
+
         th  >  input {
             font-weight: bold;
             text-align: center;

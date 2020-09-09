@@ -1,14 +1,17 @@
 {
     "name": "New Tab Schedule",
-    "version": "1.0",
+    "version": "1.1",
     "manifest_version": 2,
-    "description": "A schedule with links on your new tab page.",
+    "description": "Revolutionize your time management with easy access to all your resources right on your new tab page.",
     "icons": {
         "16": "img/icon16.png",
         "24": "img/icon24.png",
         "32": "img/icon32.png",
         "48": "img/icon48.png",
         "128":"img/icon128.png"
+    },
+    "chrome_url_overrides" : {
+        "newtab": "newtab.html"
     },
     "content_scripts": [{
         "js": ["contentscript.js"],
@@ -17,15 +20,14 @@
         "run_at": "document_start",
         "all_frames": true
     }],
-    "chrome_url_overrides" : {
-        "newtab": "newtab.html"
-    },
     "permissions": [
-        "storage",
-        "identity"
+        "identity",
+	"https://mvla.instructure.com/api/v1/*",
+	"https://www.googleapis.com/*"
+
     ],
     "oauth2": {
-        "client_id": "167234074868-jf9m980qr4ae7a08mpdun0maj43ggisj.apps.googleusercontent.com",
+        "client_id": "637372661643-jcrqfj8j9cq5t3tjdl07tnbrto604h42.apps.googleusercontent.com",
         "scopes": [
             "https://www.googleapis.com/auth/calendar.readonly"
         ]
