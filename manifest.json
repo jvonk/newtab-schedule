@@ -13,6 +13,12 @@
     "chrome_url_overrides" : {
         "newtab": "newtab.html"
     },
+    "content_scripts": [{
+        "matches": ["https://mvla.instructure.com/*", "https://periods.io/*"],
+        "css": ["contentscript.css"],
+        "js": ["contentscript.js"],
+        "all_frames": true
+    }],
     "permissions": [
         "identity",
 	"https://mvla.instructure.com/api/v1/*",
