@@ -1,6 +1,6 @@
 {
     "name": "New Tab Schedule",
-    "version": "1.1",
+    "version": "1.3",
     "manifest_version": 2,
     "description": "Revolutionize your time management with easy access to all your resources right on your new tab page.",
     "icons": {
@@ -13,23 +13,9 @@
     "chrome_url_overrides" : {
         "newtab": "newtab.html"
     },
-    "content_scripts": [{
-        "js": ["contentscript.js"],
-        "css": ["contentscript.css"],
-        "matches": ["https://mvla.instructure.com/courses/*", "https://periods.io/*"],
-        "run_at": "document_start",
-        "all_frames": true
-    }],
     "permissions": [
         "identity",
 	"https://mvla.instructure.com/api/v1/*",
 	"https://www.googleapis.com/*"
-
-    ],
-    "oauth2": {
-        "client_id": "637372661643-jcrqfj8j9cq5t3tjdl07tnbrto604h42.apps.googleusercontent.com",
-        "scopes": [
-            "https://www.googleapis.com/auth/calendar.readonly"
-        ]
-    }
+    ]
 }

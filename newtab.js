@@ -119,11 +119,38 @@ if (hr) {
     calendar.scrollTop = hr.offsetTop - calendar.offsetTop + 3
 }
 
-if (true || !localStorage.getItem('calendarDate') || new Date() - new Date(localStorage.getItem('calendarDate')) > 60 * 1000) {
-    chrome.identity.getAuthToken({ interactive: false }, function (token) {
-        let init = { method: 'GET', async: true, headers: { Authorization: 'Bearer ' + token, 'Content-Type': 'application/json' }, 'contentType': 'json' };
+if (!localStorage.getItem('calendarDate') || new Date() - new Date(localStorage.getItem('calendarDate')) > 60 * 1000) {
+    var client_id = "637372661643-l6i58lq9ls29rd0et6rsdcc8feemohr4.apps.googleusercontent.com";
+    var auth_url = 'https://accounts.google.com/o/oauth2/auth?';
+    var redirect_url = chrome.identity.getRedirectURL();
+    var auth_params = {
+        client_id: client_id,
+        redirect_uri: redirect_url,
+        response_type: 'token',
+        scope: 'https://www.googleapis.com/auth/calendar.readonly',
+        login_hint: '' // fake or non-existent won't work
+    };
+    console.log(auth_params)
+    const url = new URLSearchParams(Object.entries(auth_params));
+    url.toString();
+    auth_url += url;
+    chrome.identity.launchWebAuthFlow({url: auth_url, interactive: false}, function(responseUrl) {
+	try {
+            var token = responseUrl.substring(responseUrl.indexOf('#access_token=')+14,responseUrl.indexOf("&token_type="))
+        } catch (e) {
+            console.log(e)
+        }
+        let init = {
+            method: 'GET', headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Credentials': true,
+                'Access-Control-Allow-Methods': 'POST, GET',
+                Authorization: 'Bearer ' + token,
+                'Content-type': 'application/json'
+            }
+        };
         Promise.all([
-            fetch('https://www.googleapis.com/calendar/v3/users/me/calendarList', init).then((response) => response.json()),
+            fetch('https://www.googleapis.com/calendar/v3/users/me/calendarList?key=AIzaSyB7mBohNyYg1ZU6H5uk0BeSWtxIBsioqI8', init).then((response) => response.json()),
             fetch('https://mvla.instructure.com/api/v1/courses').then(res => res.text()).then(res => res.replace('while(1);', '')).then(res => JSON.parse(res)),
         ])
             .then(function (data) {
@@ -135,12 +162,14 @@ if (true || !localStorage.getItem('calendarDate') || new Date() - new Date(local
                 var urls = []
                 if (data[0].items) {
                     data[0].items = data[0].items.filter(x => x.summaryOverride != "Canvas" && (x.summary != "Weekend" || getStart(x).getTime() <= tommorow.getTime()))
-                    urls=urls.concat(data[0].items.map(calendar_data => fetch('https://www.googleapis.com/calendar/v3/calendars/' + encodeURIComponent(calendar_data.id) + '/events?orderBy=startTime&singleEvents=true&timeMin=' + ISODateString(today) + '&timeMax=' + ISODateString(month), init).then(res => res.json()).then(res => res.items)))
+                    urls = urls.concat(data[0].items.map(calendar_data => fetch('https://www.googleapis.com/calendar/v3/calendars/' + encodeURIComponent(calendar_data.id) + '/events?key=AIzaSyB7mBohNyYg1ZU6H5uk0BeSWtxIBsioqI8&orderBy=startTime&singleEvents=true&timeMin=' + ISODateString(today) + '&timeMax=' + ISODateString(month), init).then(res => res.json()).then(res => res.items).catch(err => console.log(err))))
                 }
+
+                console.log(data[0].items, urls)
                 if (!data[1].errors) {
-                    urls = urls.concat(data[1].map(course_data => fetch('https://mvla.instructure.com/api/v1/courses/' + course_data.id + '/assignments?bucket=future&order_by=due_at').then(res => res.text()).then(res => JSON.parse(res.toString().replace('while(1);', '')))))
+                    urls = urls.concat(data[1].map(course_data => fetch('https://mvla.instructure.com/api/v1/courses/' + course_data.id + '/assignments?bucket=future&order_by=due_at').then(res => res.text()).then(res => JSON.parse(res.toString().replace('while(1);', ''))).catch(err => console.log(err))))
                 } else {
-                    document.getElementById('message').innerHTML+='<p><b><a href="https://mvla.instructure.com/login/google">Please Login to Canvas</a></b></p>'
+                    document.getElementById('warning').innerHTML = '<b><a href="https://mvla.instructure.com/login/google">Please Login to Canvas</a></b>'
                 }
                 if (urls) {
                     Promise.all(urls)
@@ -212,6 +241,9 @@ if (true || !localStorage.getItem('calendarDate') || new Date() - new Date(local
                                 calendar.removeChild(calendar.firstChild)
                             }
                             calendar.appendChild(biggerWrapper)
+                            if (data[1].errors) {
+                                document.getElementById('warning').innerHTML = '<b><a href="https://mvla.instructure.com/login/google">Please Login to Canvas</a></b>'
+                            }
                             calendar.innerHTML = '<div id="message"><input type="button" style="font-weight:bold" id="expand" value="Expand All"></div><hr>' + calendar.innerHTML
                             document.getElementById('expand').onclick = function () {
                                 Array.from(document.querySelectorAll('details')).forEach(el => el.open = expandFlag)
